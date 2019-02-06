@@ -17,6 +17,19 @@ namespace PixelColorTracker
         private const int numberOfCols = 5;
         private const int numberOfRows = 5;
 
+        ColorForm redForm = new ColorForm()
+        {
+            Text = "Red Scale Pixels",
+        };
+        ColorForm blueForm = new ColorForm()
+        {
+            Text = "Blue Scale Pixels",
+        };
+        ColorForm greenForm = new ColorForm()
+        {
+            Text = "Green Scale Pixels",
+        };
+
         public PixelColorTrackerForm()
         {
             InitializeComponent();
@@ -24,6 +37,7 @@ namespace PixelColorTracker
 
         private void PixelColorTrackerForm_Load(object sender, EventArgs e)
         {
+            Console.WriteLine("fired");
             labels = new Label[numberOfCols][];
 
             for (int x = 0; x < numberOfCols; x++)
@@ -74,6 +88,15 @@ namespace PixelColorTracker
                     Loaded_Image_Box.Image = new Bitmap(openImageDlg.FileName);
                 }
             }
+        }
+
+        private bool Check_Form(Form form)
+        {
+            form = Application.OpenForms[form.Text];
+            if (form != null)
+                return true;
+            else
+                return false;
         }
 
         // Determine pixel color in accordance to W3C recommendations
@@ -178,9 +201,53 @@ namespace PixelColorTracker
             {
                 return;
             }
+            if (redForm == null || redForm.IsDisposed)
+            {
+                redForm = new ColorForm()
+                {
+                    Text = "Red Scale Pixels",
+                };
+            }
+            if (blueForm == null || blueForm.IsDisposed)
+            {
+                blueForm = new ColorForm()
+                {
+                    Text = "Blue Scale Pixels",
+                };
+            }
+            if (blueForm == null || blueForm.IsDisposed)
+            {
+                greenForm = new ColorForm()
+                {
+                    Text = "Green Scale Pixels",
+                };
+            }
+
+            // if any of the forms aren't open, open them
+            if (!Check_Form(redForm))
+            {
+                Console.WriteLine("being run");
+                redForm.Show();
+            }
+            if (!Check_Form(blueForm))
+            {
+                Console.WriteLine("Being run");
+                blueForm.Show();
+            }
+            if (!Check_Form(greenForm))
+            {
+                Console.WriteLine("Being Run");
+                greenForm.Show();
+            }
+
             MouseEventArgs me = (MouseEventArgs)e;
             Point mouseLocation = me.Location;
+
             Clicked_Coords_Label.Text = string.Format("Clicked Coordinates: ({0}, {1})", me.Location.X, me.Location.Y);
+
+            redForm.Load_Colors("red", mouseLocation, (Bitmap)Loaded_Image_Box.Image);
+            blueForm.Load_Colors("blue", mouseLocation, (Bitmap)Loaded_Image_Box.Image);
+            greenForm.Load_Colors("green", mouseLocation, (Bitmap)Loaded_Image_Box.Image);
         }
     }
 }
