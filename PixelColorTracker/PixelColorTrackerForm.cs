@@ -170,5 +170,17 @@ namespace PixelColorTracker
                 }
             }
         }
+
+        private void Loaded_Image_Box_Click(object sender, EventArgs e)
+        {
+            // if the image is not loaded, do nothing
+            if (Loaded_Image_Box.Image == null)
+            {
+                return;
+            }
+            MouseEventArgs me = (MouseEventArgs)e;
+            Point mouseLocation = me.Location;
+            Clicked_Coords_Label.Text = string.Format("Clicked Coordinates: ({0}, {1})", me.Location.X, me.Location.Y);
+        }
     }
 }
